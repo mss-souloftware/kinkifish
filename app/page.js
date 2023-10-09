@@ -22,12 +22,15 @@ export default function Home() {
   }, [])
 
   const [heroTitle, setHeroTitle] = useState('');
+  const [productSlides, setProductSlides] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
       try {
         const title = await homepageData();
         setHeroTitle(title);
+        const slides = await homepageData();
+        setProductSlides(slides);
       } catch (error) {
         console.error('Error fetching WordPress data:', error);
       }
@@ -40,7 +43,7 @@ export default function Home() {
     <>
       <div className="myloadingBody"></div>
       <Header />
-      <NewTshirts props={heroTitle} />
+      <NewTshirts props={heroTitle} productSlides={productSlides} />
       <Customizae />
       <Collections />
       <Followinstagram />
@@ -87,7 +90,7 @@ const homepageData = async () => {
     }
 
     const data = await response.json();
-    return data.data.page.heroSection.heroTitle;
+    return data.data.page.heroSection.productSlides;
   } catch (error) {
     throw error;
   }
