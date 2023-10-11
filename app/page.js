@@ -20,6 +20,8 @@ export default function Home() {
   const [collectionsTitle, setcollectionTitle] = useState([]);
   const [collectionCards, setcollectionCards] = useState([]);
 
+  const [menuItems, setmenuItems] = useState([]);
+
   useEffect(() => {
     setReload(true);
     return () => {
@@ -46,11 +48,23 @@ export default function Home() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const { menuItem } = await headerData();
+        setmenuItems(menuItem);
+      } catch (error) {
+        console.error('Error fetching WordPress data:', error);
+      }
+    }
+
+    fetchData();
+  }, []);
+
   return (
     <>
       <div className="myloadingBody"></div>
-      <Header />
-      {/* Pass productSlides data to NewTshirts component */}
+      <Header menuItems={menuItems} />
       <NewTshirts productSlides={productSlides} heroTitle={heroTitle} />
       <Customizae customizeTitle={customizeTitle} customizeVideo={customizeVideo} customizeBanner={customizeBanner} />
       <Collections collectionsTitle={collectionsTitle} collectionCards={collectionCards} />
@@ -61,6 +75,57 @@ export default function Home() {
     </>
   );
 }
+
+
+const headerData = async () => {
+  try {
+    const response = await fetch('https://kinkifish.com/graphql', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        query: `
+        query mainMenu {
+          menu(id: "main-menu", idType: NAME) {
+            count
+            id
+            databaseId
+            name
+            slug
+            menuItems {
+              nodes {
+                id
+                databaseId
+                title
+                url
+                cssClasses
+                description
+                label
+                linkRelationship
+                target
+                parentId
+              }
+            }
+          }
+        }
+        `,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch data from WordPress API');
+    }
+
+    const data = await response.json();
+    const menuItems = data.data.menu.menuItems.nodes;
+
+    return { menuItem: menuItems };
+  } catch (error) {
+    throw error;
+  }
+};
+
 
 const homepageData = async () => {
   try {
