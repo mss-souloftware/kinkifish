@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 import logo from "../public/assets/images/b02c1f10b5a65fb8c8cc58ae1c0a7231.png"
 
-const Footer = () => {
+const Footer = ({ menuItems, footerItems }) => {
   return (
     <>
       <link
@@ -12,7 +12,7 @@ const Footer = () => {
 
       <footer className="w-full relative bg-blueGray-200 pt-8 pb-6">
         <div className="w-full flex justify-center py-12">
-          
+
         </div>
         <div className="container mx-auto">
           <div className="flex flex-wrap text-left lg:text-left">
@@ -23,46 +23,16 @@ const Footer = () => {
                     Direct Links
                   </span>
                   <ul className="list-unstyled">
-                    <li>
-                      <a
-                        className="text-gray-500 hover:text-gray-700 font-medium block pb-2 text-md uppercase"
-                        href="https://www.creative-tim.com/presentation?ref=njs-profile"
-                      >
-                        Home
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        className="text-gray-500 hover:text-gray-700 font-medium block pb-2 text-md uppercase"
-                        href="https://blog.creative-tim.com?ref=njs-profile"
-                      >
-                        Shop
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        className="text-gray-500 hover:text-gray-700 font-medium block pb-2 text-md uppercase"
-                        href="https://www.github.com/creativetimofficial?ref=njs-profile"
-                      >
-                        Drops
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        className="text-gray-500 hover:text-gray-700 font-medium block pb-2 text-md uppercase"
-                        href="https://www.creative-tim.com/bootstrap-themes/free?ref=njs-profile"
-                      >
-                        Cart
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        className="text-gray-500 hover:text-gray-700 font-medium block pb-2 text-md uppercase"
-                        href="https://www.creative-tim.com/bootstrap-themes/free?ref=njs-profile"
-                      >
-                        Blog
-                      </a>
-                    </li>
+                    {menuItems.map((menu, index) => (
+                      <li>
+                        <a
+                          className="text-gray-500 hover:text-gray-700 font-medium block pb-2 text-md uppercase"
+                          href={menu.url}
+                        >
+                          {menu.label}
+                        </a>
+                      </li>
+                    ))}
                   </ul>
                 </div>
                 <div className="w-full lg:w-2/5 px-4">
@@ -92,9 +62,9 @@ const Footer = () => {
             </div>
 
             <div className="w-full lg:w-6/12 px-4">
-            <h5 className="text-lg mt-0 mb-2 text-gray-900 font-bold">
+              <h5 className="text-lg mt-0 mb-2 text-gray-900 font-bold">
                 SOCIALS
-            </h5>
+              </h5>
               <div className="pb-6 lg:mb-0 mb-6">
                 <button
                   className="bg-black text-white text-xl shadow-lg font-normal h-10 w-10 items-center justify-center align-center rounded-full outline-none focus:outline-none mr-4"
@@ -127,7 +97,7 @@ const Footer = () => {
                   <i class="fab fa-snapchat"></i>
                 </button>
               </div>
-              
+
               <div>
                 <Image src={logo} height={60} />
               </div>
@@ -140,33 +110,18 @@ const Footer = () => {
                 <p className="text-[0.56rem] uppercase font-bold pb-2"></p>
               </div>
               <div className="w-full flex justify-between py-3 text-left lg:pl-4 lg:pr-4">
-                <span className="text-xs text-gray-700 font-medium underline">
-                  Privacy Center
-                </span>
-                <span className="text-xs text-gray-700 font-medium underline">
-                  Privacy & Cookie Policy
-                </span>
-                <span className="text-xs text-gray-700 font-medium underline">
-                  Manage Cookies
-                </span>
-              </div>
-              <div className="w-full flex justify-between py-3 text-left lg:pl-4 lg:pr-16">
-                <span className="text-xs text-gray-700 font-medium underline ml-0">
-                  Terms & Conditions
-                </span>
-                <span className="text-xs text-gray-700 font-medium underline">
-                  Copyright Notice
-                </span>
-                <span className="text-xs text-gray-700 font-medium underline">
-                  Imprint
-                </span>
+                {footerItems.map((footerItem, index) => (
+                  <span className="text-xs text-gray-700 font-medium underline">
+                    {footerItem.label}
+                  </span>
+                ))}
               </div>
             </div>
             <div className="w-full lg:w-6/12 px-4">
               <div className="pt-3">
-              <h5 className="text-md italic mt-0 text-gray-700 font-medium w-6">
-                WE ACCEPT
-            </h5>
+                <h5 className="text-md italic mt-0 text-gray-700 font-medium w-6">
+                  WE ACCEPT
+                </h5>
               </div>
               <div className="w-full flex py-3">
                 <span>

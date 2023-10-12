@@ -21,6 +21,10 @@ export default function Home() {
   const [collectionCards, setcollectionCards] = useState([]);
 
   const [menuItems, setmenuItems] = useState([]);
+  const [noteImgs, setnoteImgs] = useState([]);
+  const [logoImgs, setlogoImgs] = useState([]);
+
+  const [footerItems, setfooterItems] = useState([]);
 
   useEffect(() => {
     setReload(true);
@@ -61,21 +65,86 @@ export default function Home() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const { noteImg, logoImg } = await headerSettings();
+        setnoteImgs(noteImg);
+        setlogoImgs(logoImg);
+      } catch (error) {
+        console.error('Error fetching WordPress data:', error);
+      }
+    }
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const { footerItem } = await footerData();
+        setfooterItems(footerItem);
+      } catch (error) {
+        console.error('Error fetching WordPress data:', error);
+      }
+    }
+
+    fetchData();
+  }, []);
+
   return (
     <>
       <div className="myloadingBody"></div>
-      <Header menuItems={menuItems} />
+      <Header menuItems={menuItems} noteImgs={noteImgs} logoImgs={logoImgs} />
       <NewTshirts productSlides={productSlides} heroTitle={heroTitle} />
       <Customizae customizeTitle={customizeTitle} customizeVideo={customizeVideo} customizeBanner={customizeBanner} />
       <Collections collectionsTitle={collectionsTitle} collectionCards={collectionCards} />
       <Followinstagram />
       <Followtiktok />
       <Subscribekinki />
-      <Footer />
+      <Footer menuItems={menuItems} footerItems={footerItems}/>
     </>
   );
 }
 
+const headerSettings = async () => {
+  try {
+    const response = await fetch('https://kinkifish.com/graphql', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        query: `
+        query headerSetting {
+          page(id: "9", idType: DATABASE_ID) {
+            headerSettings {
+              siteLogo {
+                link
+              }
+              siteNote {
+                link
+              }
+            }
+          }
+        }
+        `,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch data from WordPress API');
+    }
+
+    const data = await response.json();
+    const noteImgs = data.data.page.headerSettings.siteLogo.link;
+    const logoImgs = data.data.page.headerSettings.siteNote.link;
+
+    return { noteImg: noteImgs, logoImg: logoImgs, };
+  } catch (error) {
+    throw error;
+  }
+};
 
 const headerData = async () => {
   try {
@@ -120,7 +189,7 @@ const headerData = async () => {
     const data = await response.json();
     const menuItems = data.data.menu.menuItems.nodes;
 
-    return { menuItem: menuItems };
+    return { menuItem: menuItems, };
   } catch (error) {
     throw error;
   }
@@ -196,6 +265,46 @@ const homepageData = async () => {
     const collectionCards = data.data.page.collections.collectionCards;
 
     return { title: heroTitle, slides: productSlides, customzetitle: customizeTitle, videoUrl: customizeVideo, custmBanner: customizeBanner, collectionTitle: collectionsTitle, collectionCard: collectionCards };
+  } catch (error) {
+    throw error;
+  }
+};
+
+
+
+const footerData = async () => {
+  try {
+    const response = await fetch('https://kinkifish.com/graphql', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        query: `
+        query footermenu {
+          menu(id: "footer-menu", idType: NAME) {
+            menuItems {
+              nodes {
+                title
+                url
+                target
+                label
+              }
+            }
+          }
+        }
+        `,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch data from WordPress API');
+    }
+
+    const data = await response.json();
+    const footerItems = data.data.menu.menuItems.nodes;
+
+    return { footerItem: footerItems, };
   } catch (error) {
     throw error;
   }
