@@ -26,6 +26,14 @@ export default function Home() {
 
   const [footerItems, setfooterItems] = useState([]);
 
+  const [footerCopyright, setFooterCopyright] = useState('');
+  const [footerFacebook, setFooterFacebook] = useState('');
+  const [footerInstagram, setFooterInstagram] = useState('');
+  const [footerTikTok, setFooterTikTok] = useState('');
+  const [footerTwitter, setFooterTwitter] = useState('');
+  const [footerSnapchat, setFooterSnapchat] = useState('');
+  const [footerPayments, setFooterPayments] = useState([]);
+
   useEffect(() => {
     setReload(true);
     return () => {
@@ -36,7 +44,7 @@ export default function Home() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const { title, slides, customzetitle, videoUrl, custmBanner, collectionTitle, collectionCard } = await homepageData();
+        const { title, slides, customzetitle, videoUrl, custmBanner, collectionTitle, collectionCard, footerSettings } = await homepageData();
         setHeroTitle(title);
         setProductSlides(slides);
         setcCustomizeTitle(customzetitle);
@@ -44,6 +52,15 @@ export default function Home() {
         setcustomizeBanner(custmBanner);
         setcollectionTitle(collectionTitle);
         setcollectionCards(collectionCard);
+
+        // Set footer data
+        setFooterCopyright(footerSettings.copyright);
+        setFooterFacebook(footerSettings.facebook);
+        setFooterInstagram(footerSettings.instagram);
+        setFooterTikTok(footerSettings.tiktok);
+        setFooterTwitter(footerSettings.twitter);
+        setFooterSnapchat(footerSettings.snapchat);
+
       } catch (error) {
         console.error('Error fetching WordPress data:', error);
       }
@@ -102,7 +119,13 @@ export default function Home() {
       <Followinstagram />
       <Followtiktok />
       <Subscribekinki />
-      <Footer menuItems={menuItems} footerItems={footerItems}/>
+      <Footer menuItems={menuItems} footerItems={footerItems} noteImgs={noteImgs} footerCopyright={footerCopyright} 
+      footerFacebook={footerFacebook}
+      footerInstagram={footerInstagram}
+      footerTikTok={footerTikTok}
+      footerTwitter={footerTwitter}
+      footerSnapchat={footerSnapchat}
+       />
     </>
   );
 }
@@ -245,6 +268,22 @@ const homepageData = async () => {
                 title
               }
             }
+            footerSettings {
+              copyright
+              facebook
+              instagram
+              tiktok
+              twitter
+              fieldGroupName
+              snapchat
+              payments {
+                image {
+                  altText
+                  link
+                  title
+                }
+              }
+            }
           }
         }
         `,
@@ -259,12 +298,22 @@ const homepageData = async () => {
     const heroTitle = data.data.page.heroSection.heroTitle;
     const productSlides = data.data.page.heroSection.productSlides;
     const customizeTitle = data.data.page.customizeSection.customizeTitle;
-    const customizeVideo = data.data.page.customizeSection.videoUrl;
+    const videoUrl = data.data.page.customizeSection.videoUrl;
     const customizeBanner = data.data.page.customizeSection.bannerImage.link;
-    const collectionsTitle = data.data.page.collections.collectionTitle;
-    const collectionCards = data.data.page.collections.collectionCards;
+    const collectionTitle = data.data.page.collections.collectionTitle;
+    const collectionCard = data.data.page.collections.collectionCards;
+    const footerSettings = data.data.page.footerSettings;
 
-    return { title: heroTitle, slides: productSlides, customzetitle: customizeTitle, videoUrl: customizeVideo, custmBanner: customizeBanner, collectionTitle: collectionsTitle, collectionCard: collectionCards };
+    return {
+      title: heroTitle,
+      slides: productSlides,
+      customizeTitle: customizeTitle,
+      videoUrl: videoUrl,
+      customizeBanner: customizeBanner,
+      collectionTitle: collectionTitle,
+      collectionCard: collectionCard,
+      footerSettings: footerSettings,
+    };
   } catch (error) {
     throw error;
   }

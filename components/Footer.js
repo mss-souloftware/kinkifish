@@ -1,8 +1,12 @@
 import React from "react";
 import Image from "next/image";
-import logo from "../public/assets/images/b02c1f10b5a65fb8c8cc58ae1c0a7231.png"
+import Link from "next/link";
 
-const Footer = ({ menuItems, footerItems }) => {
+const Footer = ({ menuItems, footerItems, noteImgs, footerCopyright, footerFacebook,
+  footerInstagram,
+  footerTikTok,
+  footerTwitter,
+  footerSnapchat }) => {
   return (
     <>
       <link
@@ -66,40 +70,50 @@ const Footer = ({ menuItems, footerItems }) => {
                 SOCIALS
               </h5>
               <div className="pb-6 lg:mb-0 mb-6">
-                <button
-                  className="bg-black text-white text-xl shadow-lg font-normal h-10 w-10 items-center justify-center align-center rounded-full outline-none focus:outline-none mr-4"
-                  type="button"
-                >
-                  <i className="fab fa-facebook-square"></i>
-                </button>
-                <button
-                  className="bg-black text-white text-xl shadow-lg font-normal h-10 w-10 items-center justify-center align-center rounded-full outline-none focus:outline-none mr-4"
-                  type="button"
-                >
-                  <i className="fab fa-twitter"></i>
-                </button>
-                <button
-                  className="bg-black text-white text-xl shadow-lg font-normal h-10 w-10 items-center justify-center align-center rounded-full outline-none focus:outline-none mr-4"
-                  type="button"
-                >
-                  <i className="fab fa-instagram"></i>
-                </button>
-                <button
-                  className="bg-black text-white text-xl shadow-lg font-normal h-10 w-10 items-center justify-center align-center rounded-full outline-none focus:outline-none mr-4"
-                  type="button"
-                >
-                  <i className="fab fa-tiktok"></i>
-                </button>
-                <button
-                  className="bg-black text-white text-xl shadow-lg font-normal h-10 w-10 items-center justify-center align-center rounded-full outline-none focus:outline-none mr-4"
-                  type="button"
-                >
-                  <i class="fab fa-snapchat"></i>
-                </button>
+                <Link href={footerFacebook}>
+                  <button
+                    className="bg-black text-white text-xl shadow-lg font-normal h-10 w-10 items-center justify-center align-center rounded-full outline-none focus:outline-none mr-4"
+                    type="button"
+                  >
+                    <i className="fab fa-facebook-square"></i>
+                  </button>
+                </Link>
+                <Link href={footerTwitter}>
+                  <button
+                    className="bg-black text-white text-xl shadow-lg font-normal h-10 w-10 items-center justify-center align-center rounded-full outline-none focus:outline-none mr-4"
+                    type="button"
+                  >
+                    <i className="fab fa-twitter"></i>
+                  </button>
+                </Link>
+                <Link href={footerInstagram}>
+                  <button
+                    className="bg-black text-white text-xl shadow-lg font-normal h-10 w-10 items-center justify-center align-center rounded-full outline-none focus:outline-none mr-4"
+                    type="button"
+                  >
+                    <i className="fab fa-instagram"></i>
+                  </button>
+                </Link>
+                <Link href={footerTikTok}>
+                  <button
+                    className="bg-black text-white text-xl shadow-lg font-normal h-10 w-10 items-center justify-center align-center rounded-full outline-none focus:outline-none mr-4"
+                    type="button"
+                  >
+                    <i className="fab fa-tiktok"></i>
+                  </button>
+                </Link>
+                <Link href={footerSnapchat}>
+                  <button
+                    className="bg-black text-white text-xl shadow-lg font-normal h-10 w-10 items-center justify-center align-center rounded-full outline-none focus:outline-none mr-4"
+                    type="button"
+                  >
+                    <i class="fab fa-snapchat"></i>
+                  </button>
+                </Link>
               </div>
 
               <div>
-                <Image src={logo} height={60} />
+                <Image src={noteImgs} width={200} height={60} />
               </div>
             </div>
           </div>
@@ -124,106 +138,17 @@ const Footer = ({ menuItems, footerItems }) => {
                 </h5>
               </div>
               <div className="w-full flex py-3">
+             
+              {/* {footerPayments.map((payIcon, index) => (
                 <span>
-                  <img
-                    src="../assets/MasterCard.svg"
+                  <img key={index}
+                    src={payIcon.link}
                     className="w-16 mr-3"
-                    alt="mastercard"
+                    alt={payIcon.title}
                   />
                 </span>
-                <span>
-                  <img
-                    src="../assets/PayPal.svg"
-                    className="w-16 mr-3"
-                    alt="PayPal"
-                  />
-                </span>
-                <span>
-                  <img
-                    src="../assets/eBay.svg"
-                    className="w-16 mr-3"
-                    alt="eBay"
-                  />
-                </span>
-                <span>
-                  <img
-                    src="../assets/GooglePay.svg"
-                    className="w-16 mr-3"
-                    alt="GooglePay"
-                  />
-                </span>
-                <span>
-                  <img
-                    src="../assets/monobank.svg"
-                    className="w-16 mr-3"
-                    alt="monobank"
-                  />
-                </span>
-                <span>
-                  <img
-                    src="../assets/Discover.svg"
-                    className="w-16 mr-3"
-                    alt="Discover"
-                  />
-                </span>
-                <span>
-                  <img
-                    src="../assets/WesternUnion.svg"
-                    className="w-16 mr-3"
-                    alt="WesternUnion"
-                  />
-                </span>
-                <span>
-                  <img
-                    src="../assets/Payoneer.svg"
-                    className="w-16 mr-3"
-                    alt="Payoneer"
-                  />
-                </span>
-              </div>
-              <div className="w-full flex py-3">
-                <span>
-                  <img
-                    src="../assets/ApplePay.svg"
-                    className="w-16 mr-3"
-                    alt="ApplePay"
-                  />
-                </span>
-                <span>
-                  <img
-                    src="../assets/AmericanExpress.svg"
-                    className="w-16 mr-3"
-                    alt="AmericanExpress"
-                  />
-                </span>
-                <span>
-                  <img
-                    src="../assets/Amazon.svg"
-                    className="w-16 mr-3"
-                    alt="Amazon"
-                  />
-                </span>
-                <span>
-                  <img
-                    src="../assets/AliPay.svg"
-                    className="w-16 mr-3"
-                    alt="AliPay"
-                  />
-                </span>
-                <span>
-                  <img
-                    src="../assets/BitPay.svg"
-                    className="w-16 mr-3"
-                    alt="BitPay"
-                  />
-                </span>
-                <span>
-                  <img
-                    src="../assets/Bitcoin.svg"
-                    className="w-16 mr-3"
-                    alt="Bitcoin"
-                  />
-                </span>
+                ))} */}
+                
               </div>
             </div>
           </div>
@@ -232,10 +157,7 @@ const Footer = ({ menuItems, footerItems }) => {
         <div className="w-full flex flex-wrap items-center md:justify-between justify-center">
           <div className="w-full md:w-4/12 px-4 mx-auto text-center">
             <div className="text-sm text-gray-950 font-bold py-1">
-              ©{" "}
-              <span id="get-current-year">
-                2023-2024 Kinki Fish All Rights Reserved
-              </span>
+              {footerCopyright}
             </div>
           </div>
         </div>
