@@ -32,7 +32,9 @@ export default function Home() {
   const [footerTikTok, setFooterTikTok] = useState('');
   const [footerTwitter, setFooterTwitter] = useState('');
   const [footerSnapchat, setFooterSnapchat] = useState('');
-  const [footerPayments, setFooterPayments] = useState([]);
+  const [footerPayments, setfooterPayments] = useState([]);
+
+  const [customerCares, setcustomerCares] = useState([]);
 
   useEffect(() => {
     setReload(true);
@@ -44,7 +46,7 @@ export default function Home() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const { title, slides, customzetitle, videoUrl, custmBanner, collectionTitle, collectionCard, footerSettings } = await homepageData();
+        const { title, slides, customzetitle, videoUrl, custmBanner, collectionTitle, collectionCard, footerSettings, footerPayments } = await homepageData();
         setHeroTitle(title);
         setProductSlides(slides);
         setcCustomizeTitle(customzetitle);
@@ -60,6 +62,8 @@ export default function Home() {
         setFooterTikTok(footerSettings.tiktok);
         setFooterTwitter(footerSettings.twitter);
         setFooterSnapchat(footerSettings.snapchat);
+
+        setfooterPayments(footerPayments);
 
       } catch (error) {
         console.error('Error fetching WordPress data:', error);
@@ -108,6 +112,19 @@ export default function Home() {
 
     fetchData();
   }, []);
+  
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const { customerCares } = await costumerCare();
+        setcustomerCares(customerCares);
+      } catch (error) {
+        console.error('Error fetching WordPress data:', error);
+      }
+    }
+
+    fetchData();
+  }, []);
 
   return (
     <>
@@ -119,13 +136,15 @@ export default function Home() {
       <Followinstagram />
       <Followtiktok />
       <Subscribekinki />
-      <Footer menuItems={menuItems} footerItems={footerItems} noteImgs={noteImgs} footerCopyright={footerCopyright} 
-      footerFacebook={footerFacebook}
-      footerInstagram={footerInstagram}
-      footerTikTok={footerTikTok}
-      footerTwitter={footerTwitter}
-      footerSnapchat={footerSnapchat}
-       />
+      <Footer menuItems={menuItems} footerItems={footerItems} noteImgs={noteImgs} footerCopyright={footerCopyright}
+        footerFacebook={footerFacebook}
+        footerInstagram={footerInstagram}
+        footerTikTok={footerTikTok}
+        footerTwitter={footerTwitter}
+        footerSnapchat={footerSnapchat}
+        footerPayments={footerPayments}
+        customerCares={customerCares}
+      />
     </>
   );
 }
@@ -303,6 +322,7 @@ const homepageData = async () => {
     const collectionTitle = data.data.page.collections.collectionTitle;
     const collectionCard = data.data.page.collections.collectionCards;
     const footerSettings = data.data.page.footerSettings;
+    const footerPayments = data.data.page.footerSettings.payments;
 
     return {
       title: heroTitle,
@@ -313,6 +333,7 @@ const homepageData = async () => {
       collectionTitle: collectionTitle,
       collectionCard: collectionCard,
       footerSettings: footerSettings,
+      footerPayments: footerPayments,
     };
   } catch (error) {
     throw error;
@@ -354,6 +375,45 @@ const footerData = async () => {
     const footerItems = data.data.menu.menuItems.nodes;
 
     return { footerItem: footerItems, };
+  } catch (error) {
+    throw error;
+  }
+};
+
+
+const costumerCare = async () => {
+  try {
+    const response = await fetch('https://kinkifish.com/graphql', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        query: `
+        query customercare {
+          menu(id: "customer-care", idType: NAME) {
+            menuItems {
+              nodes {
+                title
+                url
+                target
+                label
+              }
+            }
+          }
+        }
+        `,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch data from WordPress API');
+    }
+
+    const data = await response.json();
+    const customerCares = data.data.menu.menuItems.nodes;
+
+    return { customerCares };
   } catch (error) {
     throw error;
   }

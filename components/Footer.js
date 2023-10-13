@@ -2,11 +2,12 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-const Footer = ({ menuItems, footerItems, noteImgs, footerCopyright, footerFacebook,
+const Footer = ({ menuItems, footerItems, customerCares, noteImgs, footerCopyright, footerFacebook,
   footerInstagram,
   footerTikTok,
   footerTwitter,
-  footerSnapchat }) => {
+  footerSnapchat,
+  footerPayments }) => {
   return (
     <>
       <link
@@ -44,22 +45,17 @@ const Footer = ({ menuItems, footerItems, noteImgs, footerCopyright, footerFaceb
                     Customer Care
                   </span>
                   <ul className="list-unstyled">
-                    <li>
-                      <a
-                        className="text-gray-500 hover:text-gray-700 font-medium block pb-2 text-md uppercase"
-                        href="https://github.com/creativetimofficial/notus-js/blob/main/LICENSE.md?ref=njs-profile"
-                      >
-                        Contact us
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        className="text-gray-500 hover:text-gray-700 font-medium block pb-2 text-md uppercase"
-                        href="https://creative-tim.com/terms?ref=njs-profile"
-                      >
-                        Payment
-                      </a>
-                    </li>
+                    {customerCares.map((custmrCare, index) => (
+                      <li>
+                        <a
+                          className="text-gray-500 hover:text-gray-700 font-medium block pb-2 text-md uppercase"
+                          href={custmrCare.url}
+                        >
+                          {custmrCare.label}
+                        </a>
+                      </li>
+                    ))}
+
                   </ul>
                 </div>
               </div>
@@ -138,17 +134,17 @@ const Footer = ({ menuItems, footerItems, noteImgs, footerCopyright, footerFaceb
                 </h5>
               </div>
               <div className="w-full flex py-3">
-             
-              {/* {footerPayments.map((payIcon, index) => (
-                <span>
-                  <img key={index}
-                    src={payIcon.link}
-                    className="w-16 mr-3"
-                    alt={payIcon.title}
-                  />
-                </span>
-                ))} */}
-                
+
+                {footerPayments.map((payIcon, index) => (
+                  <span>
+                    <img key={index}
+                      src={payIcon.image.link}
+                      className="w-16 mr-3"
+                      alt={payIcon.image.title}
+                    />
+                  </span>
+                ))}
+
               </div>
             </div>
           </div>
